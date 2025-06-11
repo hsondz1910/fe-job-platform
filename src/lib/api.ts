@@ -1,12 +1,13 @@
-const API_URl = process.env.NEXT_PUBLIC_API_URI || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URI || 'http://localhost:3001';
 
-export const fetchApi = async (endpoint: string, options?: RequestInit) => {
-    const response = await fetch(`${API_URl}${endpoint}`, {
+export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+        ...options,
         headers: {
             'Content-Type': 'application/json',
-            ...options?.headers,
+            ...(options.headers || {}),
         },
-        ...options,
+        credentials: 'include', // 👈 cookie sẽ được gửi đi với request
     });
 
     if (!response.ok) {
@@ -14,4 +15,4 @@ export const fetchApi = async (endpoint: string, options?: RequestInit) => {
     }
 
     return response.json();
-}
+};
